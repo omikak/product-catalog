@@ -1,6 +1,7 @@
 import { connectDb } from "@/lib/db";
 import { error, json } from "@/lib/response";
 import Product from "@/models/Product";
+import type { SortOrder } from "mongoose";
 
 function parsePagination(searchParams: URLSearchParams) {
   const page = Math.max(1, Number(searchParams.get("page") ?? 1));
@@ -28,7 +29,7 @@ export async function GET(request: Request) {
       query.category = category;
     }
 
-    const sortOption =
+    const sortOption: Record<string, SortOrder> =
       sort === "rating"
         ? { avgRating: -1, createdAt: -1 }
         : sort === "name"
